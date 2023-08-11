@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pavshop Account Activation</title>
+    <style>
+        /* Your CSS styles here */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #F2F2F2;
+            margin: 0;
+            padding: 0;
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #FF4F59;
+            font-weight: 600;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #3D474D;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #FF4F59;
+            color: #FFFFFF;
+            padding: 12px 30px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #D94149;
+        }
+
+        .button-text {
+            color: #FFFFFF;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #8A9499;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Confirmation Email</h1>
+        <p>Hello <strong>{{ user.username }}</strong>,</p>
+        <p>Thank you for joining Pavshop! We are excited to have you as a member of our community.</p>
+        <p>To activate your account, simply click on the button below:</p>
+        <p class="center">
+            <a class="button" href="http://{{ domain }}{% url 'account:activate_view' uidb64=uid token=token %}"
+                target="_blank">
+                <span class="button-text">Activate Account</span>
+            </a>
+        </p>
+        <p>If the button above doesn't work, you can also copy and paste the link below into your browser:</p>
+        <p>
+            http://{{ domain }}{% url 'account:activate_view' uidb64=uid token=token %}
+        </p>
+        <p>For any inquiries or assistance needed, please don't hesitate to contact our helpful support team.</p>
+        <p>In case this activation was not solicited by you, please feel free to disregard this email.</p>
+        <p class="footer">Best regards,<br>The Pavshop Team</p>
+    </div>
+</body>
+
+</html>
