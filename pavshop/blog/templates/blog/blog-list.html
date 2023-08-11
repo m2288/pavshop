@@ -1,0 +1,173 @@
+{% extends 'core/base.html' %}
+{% load static tags %}
+
+
+{% block css %}
+<style>
+  ul.shop li.active a {
+    font-weight: bold !important;
+    color: #ffe115 !important;
+  }
+</style>
+{% endblock css %}
+
+
+{% block page_title %}
+  <title>PAVSHOP - Multipurpose eCommerce HTML5 Template</title>
+{% endblock page_title %}
+  
+
+{% block main %}
+  <!--======= SUB BANNER =========-->
+  {% include "core/includes/sub-banner.html" %}
+  
+  <!-- Content -->
+  <div id="content"> 
+    
+    <!-- Blog List -->
+    <section class="blog-list blog-list-3 padding-top-100 padding-bottom-100">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9"> 
+
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  {% if query %}
+                    <p class="h5 mb-4">{{ blogs_count }} results for "<strong class="text-danger">{{ query }}</strong>"</p>
+                  {% elif category %}
+                    <p class="h5">Category: <strong>{{ category.name }}</strong></p>
+                    <p class="h6">{{ blogs_count }} Results</p>
+                  {% elif tag %}
+                    <p class="h5">Tag: <strong>{{ tag.name }}</strong></p>
+                    <p class="h6">{{ blogs_count }} Results</p>
+                  {% else %}
+                    <p class="h6">{{ blogs_count }} Results</p>
+                  {% endif %}
+                  
+                </div>
+              </div>
+            </div>
+
+            {% if blogs %}
+              {% for blog in blogs %}
+              <!-- Article -->
+              <article>
+                <div class="row">
+                  <div class="col-sm-5"> 
+                    <!-- Post Img --> 
+                    <img class="img-responsive" src="{{ blog.cover_image.url }}" alt="" > </div>
+                  <div class="col-sm-7"> 
+                    <!-- Tittle -->
+                    <div class="post-tittle left"> <a href="{% url 'blog:blog_detail_view' blog.slug %}" class="tittle">{{ blog.title }}</a> 
+                      <!-- Post Info --> 
+                      <span><i class="primary-color icon-user"></i> by {{ blog.author.get_username }}</span> 
+                      <span><i class="primary-color icon-calendar"></i> {{ blog.publish_date|date:"F d, Y H:i" }}</span> 
+                      <span><i class="primary-color icon-bubble"></i> {{ blog.reviews.count }}</span> 
+                      <span><i class="primary-color icon-tag"></i>
+                        {% for category in blog.blog_categories.all %}
+                          {% if category.is_active %}
+                            <a href="{% url 'blog:blog_category_view' category.slug %}">{{ category.name }}</a>{% if not forloop.last %}, {% endif %}
+                          {% endif %}
+                        {% endfor %}
+                      </span>
+                    </div>
+                    <!-- Post Content -->
+                    <div class="text-left">
+                      <p>
+                        {{ blog.content|striptags|truncatechars:200|safe }}
+                      </p>
+
+                      <div><a href="{% url 'blog:blog_detail_view' blog.slug %}" class="red-more">READ MORE</a></div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+              {% endfor %}
+            {% else %}
+              <div class="alert alert-info">
+                <p><strong>Oops!</strong> There are no blog posts available at the moment.</p>
+                <p>Please check back later for exciting content.</p>
+              </div>
+            {% endif %}
+
+            
+            <!-- Pagination -->
+            {% if blogs.paginator.num_pages > 1 %}
+              <ul class="pagination in-center">
+                {% if blogs.has_previous %}
+                  <li><a href="{% if query %}?query={{ query }}&page=1{% else %}?page=1{% endif %}"><i class="fa fa-angle-double-left"></i></a></li>
+                  <li><a href="{% if query %}?query={{ query }}&page={{ blogs.previous_page_number }}{% else %}?page={{ blogs.previous_page_number }}{% endif %}">{{ blogs.previous_page_number }}</a></li>
+                {% endif %}
+            
+                <li class="active"><a href="{% if query %}?query={{ query }}&page={{ blogs.number }}{% else %}?page={{ blogs.number }}{% endif %}">{{ blogs.number }}</a></li>
+            
+                {% if blogs.has_next %}
+                  <li><a href="{% if query %}?query={{ query }}&page={{ blogs.next_page_number }}{% else %}?page={{ blogs.next_page_number }}{% endif %}">{{ blogs.next_page_number }}</i></a></li>
+                  <li><a href="{% if query %}?query={{ query }}&page={{ blogs.paginator.num_pages }}{% else %}?page={{ blogs.paginator.num_pages }}{% endif %}"><i class="fa fa-angle-double-right"></i></a></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+          
+          </div>
+          
+          <!-- Sider Bar -->
+          <div class="col-md-3"> 
+            
+            <!-- SEARCH -->
+            {% include "blog/includes/blog-search.html" %}
+
+            <div class="shop-sidebar"> 
+              
+              <!-- Category -->
+              {% include "blog/includes/blog-categories.html" %}
+              
+              <!-- Recent Post -->
+              {% get_recently_viewed_blogs %}
+              
+              <!-- TAGS -->
+              {% get_blog_popular_tags %}
+              
+              <!-- ARCHIVES -->
+              {% get_previous_months %}
+
+              <!-- SIDE BACR BANER -->
+              <div class="side-bnr margin-top-50"> <img class="img-responsive" src="{% static 'images/sidebar-bnr.jpg' %}" alt="">
+                <div class="position-center-center"> <span class="price"><small>$</small>299</span>
+                  <div class="bnr-text">look
+                    hot
+                    with
+                    style</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Culture BLOCK -->
+    <section class="cultur-block">
+      <ul>
+        <li> <img src="{% static 'images/cultur-img-1.jpg' %}" alt="" > </li>
+        <li> <img src="{% static 'images/cultur-img-2.jpg' %}" alt="" > </li>
+        <li> <img src="{% static 'images/cultur-img-3.jpg' %}" alt="" > </li>
+        <li> <img src="{% static 'images/cultur-img-4.jpg' %}" alt="" > </li>
+      </ul>
+      
+      <!-- Culture Text -->
+      <div class="position-center-center">
+        <div class="container">
+          <div class="col-sm-6 center-block">
+            <h4>FOLLOW US @ INSTAGRAM</h4>
+            <p>Phasellus lacinia fermentutm bibendum. Interdum et malante ipuctus non. Nulla lacinia,
+              eros vel fermentum consectetur, ris dolor in ex. </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- News Letter -->
+    {% include "core/includes/news-letter.html" %}
+  </div>
+{% endblock main %}
